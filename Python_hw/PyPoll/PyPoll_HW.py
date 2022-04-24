@@ -6,29 +6,33 @@ import csv
 csvpath = os.path.join('PyPoll/Resources/election_data.csv')
 
 #Varables
-total_votes = 0
+total_votes_obtained = 0
 candidate = []
-charles = 0
-diana = 0
-raymon = 0
+charles_votes = 0
+diana_votes = 0
+raymon_votes = 0
 winner = []
 
-with open(csvpath, 'r') as file_handler:
-    csv_reader = csv.reader(file_handler, delimiter=",")
-    csv_header = next(file_handler)
+# Look through PyPole File
+with open(csvpath, 'r') as PyPollFile:
+    csv_reader = csv.reader(PyPollFile, delimiter=",")
+    csv_header = next(PyPollFile)
 
-
+    # look through candidate votes and count the votes for each candidate
     for row in csv_reader:
-        total_votes += 1
+        total_votes_obtained += 1
         candidate.append(row[2])
+        # count Charles Casper Stockham votes
         if row[2] == 'Charles Casper Stockham':
-            charles += 1
+            charles_votes  += 1
+        # count Diana DeGette votes
         elif row[2] == 'Diana DeGette':
-            diana += 1
+            diana_votes  += 1
+        # count Raymon Anthony Doane votes
         else:
-            raymon += 1
+            raymon_votes  += 1
           
-
+# look through Candidate list
 def unique(blank):
     unique_list = []     
     for x in blank:
@@ -37,36 +41,37 @@ def unique(blank):
     return unique_list
 candidates = list(unique(candidate))
 
-
-if charles > diana and charles > raymon:
+# Identify the Candidate that won
+if charles_votes  > diana_votes  and charles_votes  > raymon_votes :
         winner = candidates[0]
-elif diana > charles and diana > raymon:
+elif diana_votes  > charles_votes  and diana_votes  > raymon_votes :
         winner = candidates[1]
-elif raymon > charles and raymon > diana:
+elif raymon_votes  > charles_votes  and raymon_votes  > diana_votes :
         winner = candidates[2]
 else:
     pass
 
+#print out table
 print("Election Results")
 print("--------------------------------")
-print(f"Total Votes: {total_votes}")
+print(f"Total Votes: {total_votes_obtained}")
 print("--------------------------------")
-print(f"Charles Casper Stockham: {'{:.3%}'.format(charles/total_votes)} ({charles})")
-print(f"Diana DeGette: {'{:.3%}'.format(diana/total_votes)} ({diana})")
-print(f"Raymon Anthony Doane: {'{:.3%}'.format(raymon/total_votes)} ({raymon})")
+print(f"Charles Casper Stockham: {'{:.3%}'.format(charles_votes /total_votes_obtained)} ({charles_votes })")
+print(f"Diana DeGette: {'{:.3%}'.format(diana_votes /total_votes_obtained)} ({diana_votes })")
+print(f"Raymon Anthony Doane: {'{:.3%}'.format(raymon_votes /total_votes_obtained)} ({raymon_votes })")
 print("--------------------------------")
 print(f"Winner: {winner}")
 
+# Print table onto a text file
 csvpath2 = os.path.join('PyPoll/Analysis/PyPoll_Analysis.txt')
-
 with open(csvpath2, "w", newline = "") as text:
 
     text.write("Election Results\n")
     text.write("--------------------------------\n")
-    text.write(f"Total Votes: {total_votes}\n")
+    text.write(f"Total Votes: {total_votes_obtained}\n")
     text.write("--------------------------------\n")
-    text.write(f"Charles Casper Stockham: {'{:.3%}'.format(charles/total_votes)} ({charles})\n")
-    text.write(f"Diana DeGette: {'{:.3%}'.format(diana/total_votes)} ({diana})\n")
-    text.write(f"Raymon Anthony Doane: {'{:.3%}'.format(raymon/total_votes)} ({raymon})\n")
+    text.write(f"Charles Casper Stockham: {'{:.3%}'.format(charles_votes /total_votes_obtained)} ({charles_votes })\n")
+    text.write(f"Diana DeGette: {'{:.3%}'.format(diana_votes /total_votes_obtained)} ({diana_votes })\n")
+    text.write(f"Raymon Anthony Doane: {'{:.3%}'.format(raymon_votes /total_votes_obtained)} ({raymon_votes })\n")
     text.write("--------------------------------\n")
     text.write(f"Winner: {winner}\n")
